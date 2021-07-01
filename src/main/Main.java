@@ -19,8 +19,16 @@ public class Main {
      */
     public static void main(String[] args) {
         Analizador analizador = new Analizador();
-
-         new IDE(analizador).Run();
+        
+        //chamando funções preparativas 
+        
+        analizador.ConcatVetore();
+        
+        
+        //isso mostra a interface em tela
+        new IDE(analizador).Run();
+         
+         
          
         
        

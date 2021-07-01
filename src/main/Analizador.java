@@ -5,6 +5,7 @@
  */
 package main;
 
+import Modelos.VetordePalavras;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +60,8 @@ public class Analizador {
     public void IniciaAnalise(){
         QuebraCodigoEmLinhas();
         RemoveComentarios();
+        RemoveEspacosEmBranco();
+        
     }
     
     public void ConcatVetore(){     
@@ -85,12 +88,17 @@ public class Analizador {
                    
                 }
         }
-       
-        
+
         //atualizando as linhas
         setLinhas(linhasSemComentarios);
         
  
+    }
+
+    private void RemoveEspacosEmBranco() {
+        
+       
+        
     }
         
     

@@ -106,7 +106,7 @@ public class IDE extends JFrame{
                         
                         if( jta.getText() != null ){
                             
-                            analizador.setCodigo_total(jta.getText());
+                            analizador.setCodigoTotal(jta.getText());
                             System.out.println("contents = " + contents);
                             
                             analizador.IniciaAnalise();

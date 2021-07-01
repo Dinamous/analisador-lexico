@@ -29,7 +29,7 @@ public class Analizador {
     
     
     List<VetordePalavras> palavras  = new ArrayList<VetordePalavras>();
-    String codigo_total = "";
+    String codigoTotal = "";
     String Linhas[];
 
     public String[] getLinhas() {
@@ -40,28 +40,26 @@ public class Analizador {
         this.Linhas = Linhas;
     }
 
-    public String getCodigo_total() {
-        return codigo_total;
+    public String getCodigoTotal() {
+        return codigoTotal;
     }
 
-    public void setCodigo_total(String codigo_total) {
-        this.codigo_total = codigo_total;
+    public void setCodigoTotal(String codigoTotal) {
+        this.codigoTotal = codigoTotal;
     }
     
     public void QuebraCodigoEmLinhas(){
         //esta função coleta o codigo total o separa em posições de 
         //vetor cada linha uma posição
         
-        String valor[] = getCodigo_total().split("\\r?\\n") ;
-        setLinhas(valor);
-        
+        String valor[] = getCodigoTotal().split("\\r?\\n") ;
+        setLinhas(valor);        
     }
     
     public void IniciaAnalise(){
         QuebraCodigoEmLinhas();
-        
-    
-}
+        RemoveComentarios();
+    }
     
     public void ConcatVetore(){     
         //adicionando a vetor de palavras reservadas com o vetor de token 
@@ -69,6 +67,17 @@ public class Analizador {
         for(int i=0;i<=v.length-1;i++){
             VetordePalavras vt = new VetordePalavras(v[i],t[i]);          
             palavras.add(vt);   
+        }
+    }
+    
+    public void RemoveComentarios(){
+        for(String linha : getLinhas()){
+            System.out.println(linha);
+            if(linha.contains("!")){
+                System.out.print("SEM COMENTARIOS \n");
+                
+                System.out.println(linha.replace(linha.substring(linha.indexOf("!"), linha.length()), ""));
+            }            
         }
     }
         

@@ -142,7 +142,7 @@ public class IDE extends JFrame{
                 frame.getContentPane().add(BorderLayout.CENTER, panel);     
                 frame.pack();
 		frame.setLocationByPlatform(true);
-		frame.setSize(800,600);
+		frame.setSize(1000,600);
                 frame.setResizable(false);
 		frame.setVisible(true);
                 frame.setLocationRelativeTo(null);

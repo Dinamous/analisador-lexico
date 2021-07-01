@@ -73,25 +73,24 @@ public class Analizador {
     public void RemoveComentarios(){
         String linhasSemComentarios[] = getLinhas();
         
-        for(String linha : linhasSemComentarios){
+        //percorrendo todas as linhas
+        for(int i=0; i<=linhasSemComentarios.length-1;i++){
+
+            //verificando se a linha tem cometários
+                int comentario = linhasSemComentarios[i].indexOf("!");
             
-                int comentario = linha.indexOf("!");
-            
+                //se houver comentários naquela linha se fará um corte na posição da "!"
                 if (-1 != comentario) {
-                    
-                    linha = linha.substring(0, comentario);
-                    System.out.println(linha);
+                    linhasSemComentarios[i] = linhasSemComentarios[i].substring(0, comentario);
+                   
                 }
         }
+       
         
-        
+        //atualizando as linhas
         setLinhas(linhasSemComentarios);
         
-//        for(String linha : linhasSemComentarios){
-//            
-//               System.out.println(linha);
-//        }
-        
+ 
     }
         
     

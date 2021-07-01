@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -52,12 +54,20 @@ public class IDE extends JFrame{
                 panel.setOpaque(true);
 		
  
-		
+		Font font = new Font("Monospaced", Font.PLAIN, 18);
 		jta = new JTextArea();
 		lines = new JTextArea("1");
  
 		lines.setBackground(Color.LIGHT_GRAY);
 		lines.setEditable(false);
+                lines.setFont(font);
+                lines.setMargin(new Insets(10,10,10,10));
+                
+                jta.setBackground(Color.DARK_GRAY);
+                jta.setFont(font);
+                jta.setForeground(Color.WHITE);
+                jta.setMargin(new Insets(10,20,10,30));
+                jta.setCaretColor(Color.WHITE);
  
 		jta.getDocument().addDocumentListener(new DocumentListener(){
 			public String getText(){
@@ -101,13 +111,11 @@ public class IDE extends JFrame{
                 button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         // Get the contents of the JTextArea component.
-                        String contents = "";
-                        
-                        
+
                         if( jta.getText() != null ){
                             
                             analizador.setCodigoTotal(jta.getText());
-                            System.out.println("contents = " + contents);
+                            
                             
                             analizador.IniciaAnalise();
                             
@@ -137,6 +145,7 @@ public class IDE extends JFrame{
 		frame.setSize(800,600);
                 frame.setResizable(false);
 		frame.setVisible(true);
+                frame.setLocationRelativeTo(null);
 	}
  
       

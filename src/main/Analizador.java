@@ -64,8 +64,10 @@ public class Analizador {
         QuebraCodigoEmLinhas();
         RemoveComentarios();
         AssimilarLinhasComLexemas();
-//        RemoveEspacosEmBranco();
+        
         SeparandoLexemasComSimbolos();
+        RemoveEspacosEmBranco();
+        
         
     }
     

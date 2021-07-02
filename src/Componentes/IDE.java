@@ -95,6 +95,45 @@ public class IDE extends JFrame{
 			}
  
 		});
+                jta.setText("program input1\n" +
+"\n" +
+"	implicit none\n" +
+"	integer num1,num2,num3		!aqui temos um comentario\n" +
+"	complex complexNum\n" +
+"	real m(5,15), v(10)\n" +
+"	\n" +
+"	m(1,1) = 2.0\n" +
+"	v(7)= 3.0\n" +
+"\n" +
+"	m(1,2) =m(1,1) *v(7)\n" +
+"\n" +
+"	write(\"Teste produto:\")\n" +
+"	write(m(1,2))\n" +
+"\n" +
+"	write(\"Digite o primeiro valor:\")\n" +
+"	read(num1)\n" +
+"\n" +
+"	read(num2)\n" +
+"\n" +
+"	num3 = soma(num1, num2)\n" +
+"\n" +
+"	write(\"Soma:\")\n" +
+"	write(num3)\n" +
+"	\n" +
+"stop\n" +
+"end\n" +
+"\n" +
+"integer function soma(num1, num2)\n" +
+"	integer num1, num2\n" +
+"	integer aux\n" +
+"	aux = num1 + num2\n" +
+"	aux = num1 - num2\n" +
+"	aux = num1 / num2\n" +
+"	aux = num1 * num2\n" +
+"	aux = num1 ** num2\n" +
+"	soma = aux\n" +
+"	return\n" +
+"end");
                 
                 //configurando o scroll
                 JScrollPane jsp = new JScrollPane();

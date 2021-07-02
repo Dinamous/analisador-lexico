@@ -8,6 +8,7 @@ package Modelos;
 import com.sun.tools.javac.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -53,16 +54,72 @@ public class Linha {
     }
 
     public void RemoveEspacosEmBranco(){
-        this.lexemas = this.conteudo.trim().split("\\s");
+        String auxLexemas[] = getLexemas();
         
+        //removendo os espaços em branco gerados
+        for(String lexema : auxLexemas){
+            lexema = lexema.replaceAll("\\s","");
+        }
+        
+        setLexemas(auxLexemas);
+          
     }
 
     public void SepararLexemasPorSimbolo() {
-        this.lexemas = this.conteudo.split("\\s+|(?=\\,)\\s*|(?=\\=)|(?!\\()|(?=\\))|(?=\\-)|(?=\\+)|(?=\\/)|(?=\\*+)|(?=\\\")\\s*");
-        System.out.println(Arrays.toString(this.lexemas));
+        //chamado a função própia para separa as strings por typo de variavel
+        String rg = "\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,";
+        String regex = "\\s+|(?=\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,)|(?<=\\\"(\\w|\\d|\\s|\\:)\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*)|\\,)\\s";
+        
+
+        this.lexemas = this.conteudo.trim().split(regex);
+        
+        //removendo os espaços em branco gerados inuteis
+        
+        System.out.println(Arrays.toString(getLexemas()));
+       
+              
     }
     
     
+    
+    //funções necessárias paara fazer o split
+     public static String[] splitByCharacterType(String str) {
+      return splitByCharacterType(str, false);
+  }
+     
+     
+     private static String[] splitByCharacterType(String str, boolean camelCase) {
+    if (str == null) {
+      return null;
+    }
+    if (str.length() == 0) {
+      return new String[0];
+    }
+    char[] c = str.toCharArray();
+    List list = new ArrayList();
+    int tokenStart = 0;
+    int currentType = Character.getType(c[tokenStart]);
+    for (int pos = tokenStart + 1; pos < c.length; pos++) {
+      int type = Character.getType(c[pos]);
+      if (type == currentType) {
+        continue;
+      }
+      if (camelCase && type == Character.LOWERCASE_LETTER
+          && currentType == Character.UPPERCASE_LETTER) {
+        int newTokenStart = pos - 1;
+        if (newTokenStart != tokenStart) {
+          list.add(new String(c, tokenStart, newTokenStart - tokenStart));
+          tokenStart = newTokenStart;
+        }
+      } else {
+        list.add(new String(c, tokenStart, pos - tokenStart));
+        tokenStart = pos;
+      }
+      currentType = type;
+    }
+    list.add(new String(c, tokenStart, c.length - tokenStart));
+    return (String[]) list.toArray(new String[list.size()]);
+  }
    
     
 }

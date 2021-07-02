@@ -105,7 +105,7 @@ public class IDE extends JFrame{
 "	m(1,1) = 2.0\n" +
 "	v(7)= 3.0\n" +
 "\n" +
-"	m(1,2) =m(1,1) *v(7)\n" +
+"	m(1,2) =m(1,1)*v(7)\n" +
 "\n" +
 "	write(\"Teste produto:\")\n" +
 "	write(m(1,2))\n" +
@@ -115,7 +115,7 @@ public class IDE extends JFrame{
 "\n" +
 "	read(num2)\n" +
 "\n" +
-"	num3 = soma(num1, num2)\n" +
+"	num3 = soma(num1,num2)\n" +
 "\n" +
 "	write(\"Soma:\")\n" +
 "	write(num3)\n" +
@@ -123,14 +123,14 @@ public class IDE extends JFrame{
 "stop\n" +
 "end\n" +
 "\n" +
-"integer function soma(num1, num2)\n" +
+"integer function soma(num1,num2)\n" +
 "	integer num1, num2\n" +
 "	integer aux\n" +
-"	aux = num1 + num2\n" +
-"	aux = num1 - num2\n" +
-"	aux = num1 / num2\n" +
-"	aux = num1 * num2\n" +
-"	aux = num1 ** num2\n" +
+"	aux=num1+num2\n" +
+"	aux=num1-num2\n" +
+"	aux=num1/num2\n" +
+"	aux=num1*num2\n" +
+"	aux=num1**num2\n" +
 "	soma = aux\n" +
 "	return\n" +
 "end");

@@ -5,6 +5,7 @@
  */
 package main;
 
+import Modelos.Linha;
 import Modelos.VetordePalavras;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,8 @@ public class Analizador {
     List<VetordePalavras> palavras  = new ArrayList<VetordePalavras>();
     String codigoTotal = "";
     String Linhas[];
+    
+    List<Linha> linhasLexemas = new ArrayList<Linha>();
 
     public String[] getLinhas() {
         return Linhas;
@@ -60,6 +63,7 @@ public class Analizador {
     public void IniciaAnalise(){
         QuebraCodigoEmLinhas();
         RemoveComentarios();
+        AssimilarLinhasComLexemas();
         RemoveEspacosEmBranco();
         
     }
@@ -95,10 +99,30 @@ public class Analizador {
  
     }
 
+
+    private void AssimilarLinhasComLexemas() {
+       
+        String linhas[] = getLinhas();
+        
+        //percorrendo todas as linhas
+        for(int i=0; i<=linhas.length-1;i++){
+            Linha l = new Linha();
+           l.setConteudo(linhas[i]);
+           l.setLinha(i);
+           
+           linhasLexemas.add(l);
+           //adiciona toda a linha para a o noco array contendo sua linha de origem
+        }
+          
+    }
+
     private void RemoveEspacosEmBranco() {
         
-       
-        
+        for(int i=0;i<=linhasLexemas.size()-1 ;i++){
+            
+            linhasLexemas.get(i).RemoveEspacosEmBranco();
+            
+        }
     }
         
     

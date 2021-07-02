@@ -67,7 +67,8 @@ public class Linha {
 
     public void SepararLexemasPorSimbolo() {
         //chamado a função própia para separa as strings por typo de variavel
-        String regex = "\\s+|(?=\\\"|\\(|\\)|\\=|\\+|\\-|\\*+|\\/|\\,)|(?<=\\\"|\\(|\\)|\\=|\\+|\\-|\\*+|\\/|\\,)|\\s";
+        String rg = "\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,";
+        String regex = "\\s+|(?=\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,)|(?<=\\\"(\\w|\\d|\\s|\\:)\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*)|\\,)\\s";
         
 
         this.lexemas = this.conteudo.trim().split(regex);

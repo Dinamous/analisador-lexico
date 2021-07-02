@@ -64,7 +64,8 @@ public class Analizador {
         QuebraCodigoEmLinhas();
         RemoveComentarios();
         AssimilarLinhasComLexemas();
-        RemoveEspacosEmBranco();
+//        RemoveEspacosEmBranco();
+        SeparandoLexemasComSimbolos();
         
     }
     
@@ -121,6 +122,15 @@ public class Analizador {
         for(int i=0;i<=linhasLexemas.size()-1 ;i++){
             
             linhasLexemas.get(i).RemoveEspacosEmBranco();
+            
+        }
+    }
+    
+    private void SeparandoLexemasComSimbolos() {
+        
+        for(int i=0;i<=linhasLexemas.size()-1 ;i++){
+            
+            linhasLexemas.get(i).SepararLexemasPorSimbolo();
             
         }
     }

@@ -54,8 +54,15 @@ public class Linha {
 
     public void RemoveEspacosEmBranco(){
         this.lexemas = this.conteudo.trim().split("\\s");
+        
+    }
+
+    public void SepararLexemasPorSimbolo() {
+        this.lexemas = this.conteudo.split("\\s+|(?=\\,)\\s*|(?=\\=)|(?!\\()|(?=\\))|(?=\\-)|(?=\\+)|(?=\\/)|(?=\\*+)|(?=\\\")\\s*");
         System.out.println(Arrays.toString(this.lexemas));
     }
+    
+    
    
     
 }

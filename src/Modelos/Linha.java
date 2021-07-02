@@ -5,7 +5,6 @@
  */
 package Modelos;
 
-import com.sun.tools.javac.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,8 +66,7 @@ public class Linha {
 
     public void SepararLexemasPorSimbolo() {
         //chamado a função própia para separa as strings por typo de variavel
-        String rg = "\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,";
-        String regex = "\\s+|(?=\\\"(\\w|\\d|\\s|\\:){0,99}\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*){1,2}|\\,)|(?<=\\\"(\\w|\\d|\\s|\\:)\\\"|\\(|\\)|\\=|\\+|\\-|\\/|(\\*)|\\,)\\s";
+        String regex = "/\\s+|(?=\\(|\\))/g";
         
 
         this.lexemas = this.conteudo.trim().split(regex);

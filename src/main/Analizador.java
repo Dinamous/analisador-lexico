@@ -6,6 +6,7 @@
 package main;
 
 import Modelos.Linha;
+import Modelos.Tabela;
 import Modelos.VetordePalavras;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,7 @@ public class Analizador {
     String Linhas[];
     
     List<Linha> linhasLexemas = new ArrayList<Linha>();
+    Tabela tabela = new Tabela();
 
     public String[] getLinhas() {
         return Linhas;
@@ -67,6 +69,8 @@ public class Analizador {
         
         SeparandoLexemasComSimbolos();
         RemoveEspacosEmBranco();
+        
+//        tabela.criaJanela();
         
         
     }

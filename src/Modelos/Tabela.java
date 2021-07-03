@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,9 +26,9 @@ import javax.swing.table.TableModel;
  */
 public class Tabela extends JFrame{
         
-    ArrayList<Celula> celulas ;
+    public List<Celula> celulas  = new ArrayList<Celula>();
     String [] colunas = {"Id", "Lexema", "Token","Valor Inicial", "Escopo", "Linhas","Colunas","Linha"};
-    
+    DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
     JPanel painelFundo;
     JTable tabela;
     JScrollPane barraRolagem;
@@ -39,16 +40,38 @@ public class Tabela extends JFrame{
         {"3", "aaaa", "AAA","0", "-", "-","-","2"},
         
     };
+    
+    Object valor[][];
    
     public Tabela() {
           
     }
 
        public void criaJanela(){
+           
+        for (int i = 0; i < celulas.size()-1; i++){  
+            int id = celulas.get(i).id;
+            String lexema = celulas.get(i).lexema;
+            float valor = celulas.get(i).valor_inicial;
+            String escopo = celulas.get(i).escopo;
+            int lin = celulas.get(i).lin;
+            int col = celulas.get(i).col;
+            String token = celulas.get(i).token;
+            int linha = celulas.get(i).linha;
+           
+            Object[] data = {id, lexema,token,valor,escopo,lin,col,linha};
+
+            tableModel.addRow(data);   
+            
+        }
+           
+           
+           
+           
 
         painelFundo = new JPanel();
         painelFundo.setLayout(new GridLayout(1, 1));
-        tabela = new JTable(dados, colunas);
+        tabela = new JTable(tableModel);
         barraRolagem = new JScrollPane(tabela);
         painelFundo.add(barraRolagem);
         Font font = new Font("Monospaced", Font.PLAIN, 18);

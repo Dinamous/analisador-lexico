@@ -35,7 +35,7 @@ public class Celula {
     
     
     
-    public Celula( String lexema, String token, float valor_inicial, String escopo, int lin, int col, int linha) {
+    public Celula(int id, String lexema, String token, float valor_inicial, String escopo, int lin, int col, int linha) {
        this.lexema = lexema;
        this.token = token;
        this.valor_inicial = valor_inicial;
@@ -43,8 +43,8 @@ public class Celula {
        this.lin = lin;
        this.col = col;
        this.linha = linha;
-
-       IncrementaId();
+       this.id = id;
+       
    }
 
      

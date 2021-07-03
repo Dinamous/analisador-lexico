@@ -93,7 +93,7 @@ public class Linha {
         
         //removendo os espaços em branco gerados inuteis
         
-        System.out.println(Arrays.toString(getLexemas()));
+//        System.out.println(Arrays.toString(getLexemas()));
        
               
     }

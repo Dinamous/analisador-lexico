@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Analizador {
 
-    String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "print", "if",
+    String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "write", "if",
         "then", "else", "end", "go", "endif", "endgo", "to", "pause", "parameter", "while", "do", "call", "subroutine", "function", "return",
         ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ",","="};
 
@@ -155,17 +155,26 @@ public class Analizador {
                         Celula cel = new Celula();
                         cel.id = id;
                         cel.lexema = lexema;
-                        cel.escopo = "aa";
-                        cel.lin = 0;
-                        cel.col = 0;
+                        cel.escopo = "-";
+                        cel.lin = "-";
+                        cel.col = "-";
                         cel.token = RetornaToken(lexema) ;
                         
-                        cel.valor_inicial = 0;
+                        //verfica se o tipo do token pra ver se necessita 
+                        //encontrar o valor de memória
+                        if(cel.token.equals("NUM")){
+                            cel.valor_inicial = lexema;
+                        }else if(cel.token.equals("id")){
+                            cel.valor_inicial =  CalculaValorInicial(l);
+                        }
+                        
+                        
                         cel.linha = l.getLinha();
-
+                        
+                        //incrementa o id pro próximo lexema
                         id++;
                         
-
+                        //adiciona a nova linha na tabela
                         tabela.celulas.add(cel);
                     }
 
@@ -191,8 +200,26 @@ public class Analizador {
             
         }
         
+        //verificando se o lexema é um numero
+        if(lexema.trim().matches("((\\+|-)?([0-9]+)(\\.[0-9]+)?)|((\\+|-)?\\.?[0-9]+)")){
+           return "NUM";
+        }
+        
+        
+        //verificando se o lexema é o conteudo das funções write()
+        if(lexema.matches("\\\"(\\w|\\d|\\s|\\:)*\\\"")){
+            return "LITERAL";
+        }
+        
+        return "-";
+        
+    }
+
+    private String CalculaValorInicial(Linha l) {
+      
         
         return "-";
     }
 
 }
+    

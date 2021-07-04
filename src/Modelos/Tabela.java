@@ -52,10 +52,10 @@ public class Tabela extends JFrame{
         for (int i = 0; i < celulas.size()-1; i++){  
             int id = celulas.get(i).id;
             String lexema = celulas.get(i).lexema;
-            float valor = celulas.get(i).valor_inicial;
+            String valor = celulas.get(i).valor_inicial;
             String escopo = celulas.get(i).escopo;
-            int lin = celulas.get(i).lin;
-            int col = celulas.get(i).col;
+            String lin = celulas.get(i).lin;
+            String col = celulas.get(i).col;
             String token = celulas.get(i).token;
             int linha = celulas.get(i).linha;
            
@@ -79,7 +79,7 @@ public class Tabela extends JFrame{
 //              
 
         getContentPane().add(painelFundo);
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
         setSize(900, 500);
         setVisible(true);
     }

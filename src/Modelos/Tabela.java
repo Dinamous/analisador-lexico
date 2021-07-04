@@ -80,7 +80,7 @@ public class Tabela extends JFrame{
 
         getContentPane().add(painelFundo);
         setLocationRelativeTo(null);
-        setSize(900, 300);
+        setSize(900, 500);
         setVisible(true);
     }
     

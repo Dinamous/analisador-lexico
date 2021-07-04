@@ -41,10 +41,10 @@ public class Tabela extends JFrame{
     };
    
     public Tabela() {
-          
+        
     }
 
-       public void criaJanela(){
+        public void criaJanela(){
 
         painelFundo = new JPanel();
         painelFundo.setLayout(new GridLayout(1, 1));

@@ -70,7 +70,7 @@ public class Analizador {
         SeparandoLexemasComSimbolos();
         RemoveEspacosEmBranco();
         
-//        tabela.criaJanela();
+        tabela.criaJanela();
         
         
     }

@@ -65,14 +65,9 @@ public class Linha {
     }
 
     public void SepararLexemasPorSimbolo() {
-<<<<<<< HEAD
-        //chamado a função própia para separa as strings por typo de variavel
-        String regex = "/\\s+|(?=\\(|\\))/g";
-        
-=======
-       
        //todas as regex
-       String regex = "((?<=\\()|(?=\\())"
+       String regex = "/\\r?\\n|\\r" +
+               "((?<=\\()|(?=\\())"
                     + "|(?<=\\))|(?=\\))"
                     + "|(?<=\\,)|(?=\\,)"
                     + "|(?<=\\=)|(?=\\=)"
@@ -89,7 +84,6 @@ public class Linha {
        // a regra de quebra de elementos por espaços na regex
         if(!getConteudo().contains("\"")){
             regex += "|\\s+";
->>>>>>> bc29be88f5eaa2118ae95314567078820d4dcbc5
 
         }
 

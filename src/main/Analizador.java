@@ -21,14 +21,14 @@ public class Analizador {
 
     String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "print", "if",
         "then", "else", "end", "go", "endif", "endgo", "to", "pause", "parameter", "while", "do", "call", "subroutine", "function", "return",
-        ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ","};
+        ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ",","="};
 
     String t[] = {"PRO_INT", "TYPE_IMPLICIT", "TYPE_NONE", "TYPE_INTEGER", "TYPE_REAL", "TYPE_COMPLEX", "TYPE_CHARACTER", "TYPE_LOGICAL",
         "INPUT", "OUTPUT", "COND_IF", "COND_THEN", "COND_ELSE", "PRO_END", "FUNC_GO", "COND_END_IF", "COND_END_GO", "FUNC_TO",
         "FUNC_PAUSE", "PARAMS", "LOOP_WHILE", "LOOP_DO", "FUNC_CALL", "SUBROUTINE", "FUNC", "RET", "CB_EQUAL", "CB_NOTEQUAL",
         "CB_LOWERTHAN", "CB_LESSEQUAL", "CB_GREATERTHAN", "CB_GREATEREQUAL", "CB_OR", "CB_AND", "CB_NOT",
         "OP_PLUS", "OP_MINUS", "OP_MULTI", "OP_DIV", "OP_POW", "SIMB_OP_PAR", "SIMB_CL_PAR", "SIMB_QUOTE", "OP_CONCAT",
-        "SIMB_EXCLAMATION", "SIMB_DOT", "SIMB_COMMA"};
+        "SIMB_EXCLAMATION", "SIMB_DOT", "SIMB_COMMA","OP_EQUAL"};
 
     List<VetordePalavras> palavras = new ArrayList<VetordePalavras>();
     String codigoTotal = "";
@@ -158,13 +158,13 @@ public class Analizador {
                         cel.escopo = "aa";
                         cel.lin = 0;
                         cel.col = 0;
-                        cel.token = "bbb" ;
-                        //TODO fazer função retornaLexema(lexema)
+                        cel.token = RetornaToken(lexema) ;
+                        
                         cel.valor_inicial = 0;
                         cel.linha = l.getLinha();
 
                         id++;
-                        System.out.println(cel);
+                        
 
                         tabela.celulas.add(cel);
                     }
@@ -175,6 +175,24 @@ public class Analizador {
 
         }
 
+    }
+
+    private String RetornaToken(String lexema) {
+        
+        //foreach que percorre o vetor de palavras que contem 
+        //todas os lexemas reservados e tokens correspondentes
+        for(VetordePalavras vetorPalavras : palavras){
+            
+            if(vetorPalavras.palavra_reservada.equals(lexema)){
+                //se o lexema pertence ao vetor de palavras 
+                //reservadas retorna seu devido token
+                return vetorPalavras.token;
+            }
+            
+        }
+        
+        
+        return "-";
     }
 
 }

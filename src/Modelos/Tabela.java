@@ -44,7 +44,7 @@ public class Tabela extends JFrame{
     Object valor[][];
    
     public Tabela() {
-          
+        
     }
 
        public void criaJanela(){
@@ -64,9 +64,6 @@ public class Tabela extends JFrame{
             tableModel.addRow(data);   
             
         }
-           
-           
-           
            
 
         painelFundo = new JPanel();

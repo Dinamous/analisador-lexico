@@ -5,7 +5,6 @@
  */
 package Modelos;
 
-import com.sun.tools.javac.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,9 +65,9 @@ public class Linha {
     }
 
     public void SepararLexemasPorSimbolo() {
-       
        //todas as regex
-       String regex = "((?<=\\()|(?=\\())"
+       String regex = "/\\r?\\n|\\r" +
+               "((?<=\\()|(?=\\())"
                     + "|(?<=\\))|(?=\\))"
                     + "|(?<=\\,)|(?=\\,)"
                     + "|(?<=\\=)|(?=\\=)"

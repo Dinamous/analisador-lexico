@@ -164,8 +164,8 @@ public class Analizador {
                         //encontrar o valor de memória
                         if(cel.token.equals("NUM")){
                             cel.valor_inicial = lexema;
-                        }else if(cel.token.equals("id")){
-                            cel.valor_inicial =  CalculaValorInicial(l);
+                        }else if(cel.token.equals("ID")){
+                            cel.valor_inicial = CalculaValorInicial(l);
                         }
                         
                         
@@ -223,10 +223,17 @@ public class Analizador {
     }
 
     private String CalculaValorInicial(Linha l) {
-      
+        
         if(l.getConteudo().contains("=")){
+            //System.out.println("tem igual na linha: " + l.getLinha());;
+            String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
+            //System.out.println("+++" + Arrays.toString(splitado));
             if(l.getConteudo().contains(",")){
+                //System.out.println("tem vírgula na linha: " + l.getLinha());
                 String variaveis[] = l.getConteudo().split(",");
+                if(divisaoIgual.length > 2){
+                    //TODO: Dividir as expressões em caso de atribuição de mais de uma variável em uma linha
+                }
                 System.out.println(Arrays.toString(variaveis));
             }
             

@@ -99,6 +99,8 @@ public class IDE extends JFrame{
 "\n" +
 "	implicit none\n" +
 "	integer num1,num2,num3		!aqui temos um comentario\n" +
+"       integer a= 5+3*2, b = (4/2)**3	!temos atribuicoes com valores numericos\n" +
+"	integer n = a + b/ 3\n"+
 "	complex complexNum\n" +
 "	real m(5,15), v(10)\n" +
 "	\n" +

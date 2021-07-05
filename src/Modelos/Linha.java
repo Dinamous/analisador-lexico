@@ -8,6 +8,7 @@ package Modelos;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import main.Analizador;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Linha {
     private String lexemas[];
     private int linha;
     private String conteudo;
+    Analizador analizador = new Analizador();
 
     public Linha() {
     }
@@ -67,26 +69,28 @@ public class Linha {
     public void SepararLexemasPorSimbolo() {
        //todas as regex
        String regex = "/\\r?\\n|\\r" +
-               "((?<=\\()|(?=\\())"
+                      "|((?<=\\()|(?=\\())"
                     + "|(?<=\\))|(?=\\))"
                     + "|(?<=\\,)|(?=\\,)"
                     + "|(?<=\\=)|(?=\\=)"
                     + "|(?<=\\+)|(?=\\+)"
                     + "|(?<=\\-)|(?=\\-)"
                     + "|(?<=\\/)|(?=\\/)"
-                    + "|(?<=\\*\\*)|(?=\\*\\*)"
                     + "|(?<=\\*)|(?=\\*)"
+                    + "|(?<=\\*\\*)|(?=\\*\\*)"
                     + "|\\\"(\\w|\\d|\\s|\\:)*\\\""
-       
+
                ;
+       
+      
   
        //verificando se a linha possui um ", se não tiver adiciona
        // a regra de quebra de elementos por espaços na regex
-        if(!getConteudo().contains("\"")){
+        if(!getConteudo().contains("\"|\\s")){
             regex += "|\\s+";
 
         }
-
+//        System.out.println(this.conteudo.);
        
         this.lexemas = this.conteudo.trim().split(regex);
         

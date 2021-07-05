@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Analizador {
 
-    String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "write", "if",
+    public String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "write", "if",
         "then", "else", "end", "go", "endif", "endgo", "to", "pause", "parameter", "while", "do", "call", "subroutine", "function", "return",
         ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ",","=","stop"};
 
@@ -165,7 +165,7 @@ public class Analizador {
                         if(cel.token.equals("NUM")){
                             cel.valor_inicial = lexema;
                         }else if(cel.token.equals("ID")){
-                            cel.valor_inicial = CalculaValorInicial(l);
+                            cel.valor_inicial = CalculaValorInicial(l,lexema);
                         }
                         
                         
@@ -222,23 +222,37 @@ public class Analizador {
         
     }
 
-    private String CalculaValorInicial(Linha l) {
-        
+    private String CalculaValorInicial(Linha l,String lexema) {
+          
         if(l.getConteudo().contains("=")){
-            //System.out.println("tem igual na linha: " + l.getLinha());;
-            String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
-            //System.out.println("+++" + Arrays.toString(splitado));
-            if(l.getConteudo().contains(",")){
-                //System.out.println("tem vírgula na linha: " + l.getLinha());
-                String variaveis[] = l.getConteudo().split(",");
-                if(divisaoIgual.length > 2){
-                    //TODO: Dividir as expressões em caso de atribuição de mais de uma variável em uma linha
-                }
-                System.out.println(Arrays.toString(variaveis));
-            }
-            
-            
+           System.out.print(l.getConteudo());
+           
+           if(l.getConteudo().contains(",")){
+               System.out.println(" ==  virgula");
+           }
+            System.out.println("\n");
         }
+        
+         
+        
+//        if(l.getConteudo().contains("=")){
+////            System.out.println("tem igual na linha: " + l.getLinha());;
+//            String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
+////            System.out.println("+++" + Arrays.toString(splitado));
+//            if(l.getConteudo().contains(",")){
+////                System.out.println("tem vírgula na linha: " + l.getLinha());
+//                String variaveis[] = l.getConteudo().split(",");
+//                if(divisaoIgual.length > 2){
+//                    //TODO: Dividir as expressões em caso de atribuição de mais de uma variável em uma linha
+//                }
+//                
+//               
+//                System.out.println(Arrays.toString(variaveis));
+//
+//            }
+//            
+//            
+//        }
         
         
         

@@ -225,11 +225,11 @@ public class Analizador {
     private String CalculaValorInicial(Linha l) {
         
         if(l.getConteudo().contains("=")){
-            //System.out.println("tem igual na linha: " + l.getLinha());;
+            System.out.println("tem igual na linha: " + l.getLinha());;
             String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
-            //System.out.println("+++" + Arrays.toString(splitado));
+            System.out.println("+++" + Arrays.toString(divisaoIgual));
             if(l.getConteudo().contains(",")){
-                //System.out.println("tem vírgula na linha: " + l.getLinha());
+                System.out.println("tem vírgula na linha: " + l.getLinha());
                 String variaveis[] = l.getConteudo().split(",");
                 if(divisaoIgual.length > 2){
                     //TODO: Dividir as expressões em caso de atribuição de mais de uma variável em uma linha

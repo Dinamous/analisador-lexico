@@ -232,12 +232,16 @@ public class Analizador {
         if(linha.contains(",")){
             
    
+        //se a linha não possui mais de uma atribuição
         }else{
+            //verifica se a linha possui atribuição, pq existem ID que não são atribuições
             if(linha.contains("=")){
                 int posIgual = linha.indexOf("=");
                 int posLexema = linha.indexOf(lexema);
                 //aux=num1+num2
                 
+                //verificando se o lexema que busca valor está antes do sinal de "="
+                //caso contrário só retorna o lexema
                 if(posLexema< posIgual){
                     String expressao[] = linha.split("=");
                     System.out.println(Arrays.toString(expressao));

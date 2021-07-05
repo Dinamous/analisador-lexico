@@ -86,13 +86,14 @@ public class Linha {
   
        //verificando se a linha possui um ", se não tiver adiciona
        // a regra de quebra de elementos por espaços na regex
-        if(!getConteudo().contains("\"|\\s")){
+        if(!getConteudo().contains("\"")){
             regex += "|\\s+";
 
         }
-//        System.out.println(this.conteudo.);
+
+      
        
-        this.lexemas = this.conteudo.trim().split(regex);
+        this.lexemas = this.conteudo.split(regex);
         
         //removendo os espaços em branco gerados inuteis
         

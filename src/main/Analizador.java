@@ -223,14 +223,32 @@ public class Analizador {
     }
 
     private String CalculaValorInicial(Linha l,String lexema) {
+        String linha = l.getConteudo();
+        //integer a= 5+3*2, b = (4/2)**3
+        //m(1,1) = 2.0
+        //m(1,2) =m(1,1)*v(7)
+        //aux=num1+num2
           
-        if(l.getConteudo().contains("=")){
-           System.out.print(l.getConteudo());
-           
-           if(l.getConteudo().contains(",")){
-               System.out.println(" ==  virgula");
-           }
-            System.out.println("\n");
+        if(linha.contains(",")){
+            
+   
+        }else{
+            if(linha.contains("=")){
+                int posIgual = linha.indexOf("=");
+                int posLexema = linha.indexOf(lexema);
+                //aux=num1+num2
+                
+                if(posLexema< posIgual){
+                    String expressao[] = linha.split("=");
+                    System.out.println(Arrays.toString(expressao));
+                    return expressao[1];
+                }else{
+                    return lexema;
+                }
+                
+                
+            }
+            
         }
         
          

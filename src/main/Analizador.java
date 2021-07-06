@@ -166,6 +166,8 @@ public class Analizador {
                             cel.valor_inicial = lexema;
                         } else if (cel.token.equals("ID")) {
                             cel.valor_inicial = CalculaValorInicial(l, lexema);
+                        }else{
+                            cel.valor_inicial = "-";
                         }
 
                         cel.linha = l.getLinha();
@@ -223,77 +225,63 @@ public class Analizador {
     private String CalculaValorInicial(Linha l, String lexema) {
         String linha = l.getConteudo();
 
-        //m(1,1) = 2.0
-        //m(1,2) =m(1,1)*v(7)
-        //aux=num1+num2
-        if (linha.contains(",")) {
+        //apenas atribui o valor para um identificador
+        //se ele posssui um lexema de = na linha dele
+        if (linha.contains("=")) {
 
-            int posVirgula = linha.indexOf(",");
-            int posIgual = linha.indexOf("=");
+            int countIgual = linha.length() - linha.replaceAll("=", "").length();
 
-            if (posIgual < posVirgula) {
-                // x = m(1,2) + 3
-            } else {
-                String expressao[] = linha.split("=");
-                return expressao[expressao.length-1];
-                //m(1,1) = 2.0
-            }
-
-            if (linha.contains("=")) {
-
-                //integer a= 5+3*2
-                //b = (4/2)**3
-                String expressoes[] = linha.split(",");
-                for (String expressao : expressoes) {
-                    if (expressao.contains(lexema)) {
-                        System.out.println(expressao + "- " + expressao.indexOf("=") + "--" + (expressao.length() - 1));
-                        String exprex[] = expressao.split("=");
-                        return exprex[exprex.length-1];
-                    }
-                }
-            }
-
-            //se a linha não possui mais de uma atribuição
-        } else {
-            //verifica se a linha possui atribuição, pq existem ID que não são atribuições
-            if (linha.contains("=")) {
+            //se a linha possui apenas uma tribuição
+            if (countIgual == 1) {
                 int posIgual = linha.indexOf("=");
                 int posLexema = linha.indexOf(lexema);
-                //aux=num1+num2
 
-                //verificando se o lexema que busca valor está antes do sinal de "="
-                //caso contrário só retorna o lexema
+                //se o lexema pesquisado está antes do igual
                 if (posLexema < posIgual) {
-                    String expressao[] = linha.split("=");
+                    System.out.println(linha);
+                    int posVirgula = linha.indexOf(",");
+                    
 
-                    return expressao[expressao.length-1];
+                    //se a virgula tá depois do igual
+                    if (posVirgula > posIgual) {
+
+                        String atribuicoes[] = linha.split(",");
+                        for (String atribuicao : atribuicoes) {
+                            if (atribuicao.contains(lexema)) {
+                                String ex[] = atribuicao.split("=");
+                                return ex[ex.length - 1];
+                            }
+                        }
+                        
+                    //se a virgula tá antes do igual
+                    } else {
+
+                        String exp[] = linha.split("=");
+                        return exp[exp.length - 1];
+                    }
+
                 } else {
                     return lexema;
                 }
 
+            //caso a linha tenha mais de uma atribuição
+            } else {
+                String splitLinha[] = linha.split(",");
+                for(String atribuicao :splitLinha){
+                    if(atribuicao.contains(lexema)){
+                        String split[] = atribuicao.split("=");
+                        return split[split.length-1];
+                    }
+                }
+
             }
 
+        }else{
+            return "-";
         }
 
-//        if(l.getConteudo().contains("=")){
-////            System.out.println("tem igual na linha: " + l.getLinha());;
-//            String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
-////            System.out.println("+++" + Arrays.toString(splitado));
-//            if(l.getConteudo().contains(",")){
-////                System.out.println("tem vírgula na linha: " + l.getLinha());
-//                String variaveis[] = l.getConteudo().split(",");
-//                if(divisaoIgual.length > 2){
-//                    //TODO: Dividir as expressões em caso de atribuição de mais de uma variável em uma linha
-//                }
-//                
-//               
-//                System.out.println(Arrays.toString(variaveis));
-//
-//            }
-//            
-//            
-//        }
-        return "-";
+
+        return "ERRO";
     }
 
     //função que transforma uma expressão arritmética de uma String

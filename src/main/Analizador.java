@@ -156,9 +156,9 @@ public class Analizador {
                     
                     //verificando se a linha possui funções ou subrotinas
                 }else if (l.getConteudo().contains("function")){
-                    escopo = l.getConteudo().trim().substring(l.getConteudo().indexOf("function")+8, l.getConteudo().indexOf("("));
+                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("function")+9, l.getConteudo().indexOf("("));
                 }else if(l.getConteudo().contains("subroutine")){
-                    escopo = l.getConteudo().trim().substring(l.getConteudo().indexOf("subroutine")+10, l.getConteudo().indexOf("("));
+                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("subroutine")+11, l.getConteudo().indexOf("("));
                     
                 }
                 for (String lexema : l.getLexemas()) {

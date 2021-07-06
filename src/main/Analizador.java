@@ -155,9 +155,11 @@ public class Analizador {
                     escopo = "global";
                     
                     //verificando se a linha possui funções ou subrotinas
-                }else if (l.getConteudo().contains("function") ||
-                    l.getConteudo().contains("subroutine")){
-                    escopo = l.getLexemas()[l.getLexemas().length-6];
+                }else if (l.getConteudo().contains("function")){
+                    escopo = l.getConteudo().trim().substring(l.getConteudo().indexOf("function")+8, l.getConteudo().indexOf("("));
+                }else if(l.getConteudo().contains("subroutine")){
+                    escopo = l.getConteudo().trim().substring(l.getConteudo().indexOf("subroutine")+10, l.getConteudo().indexOf("("));
+                    
                 }
                 for (String lexema : l.getLexemas()) {
 
@@ -292,7 +294,7 @@ public class Analizador {
             }
 
         }else{
-            return lexema;
+            return "-";
         }
 
 

@@ -57,7 +57,7 @@ public class Tabela extends JFrame{
             String lin = celulas.get(i).lin;
             String col = celulas.get(i).col;
             String token = celulas.get(i).token;
-            int linha = celulas.get(i).linha;
+            int linha = celulas.get(i).linha+1;
            
             Object[] data = {id, lexema,token,valor,escopo,lin,col,linha};
 

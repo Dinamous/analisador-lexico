@@ -144,18 +144,27 @@ public class Analizador {
 
     private void PopulaTabela() {
         int id = 0;
+        String escopo = "";
 
         for (Linha l : linhasLexemas) {
 
             if (l.getLexemas().length > 0) {
-//                System.out.println(l.getLexemas().length);
+        
+                //verificando se a linha possui escopo
+                if(l.getConteudo().contains("program")){
+                    escopo = "global";
+                    
+                }else if (l.getConteudo().contains("function") ||
+                    l.getConteudo().contains("subroutine")){
+                    escopo = l.getLexemas()[l.getLexemas().length-6];
+                }
                 for (String lexema : l.getLexemas()) {
 
                     if (lexema.length() >= 1) {
                         Celula cel = new Celula();
                         cel.id = id;
                         cel.lexema = lexema;
-                        cel.escopo = "-";
+                        
                         cel.lin = "-";
                         cel.col = "-";
                         cel.token = RetornaToken(lexema, l);
@@ -164,11 +173,16 @@ public class Analizador {
                         //encontrar o valor de memória
                         if (cel.token.equals("NUM")) {
                             cel.valor_inicial = lexema;
+                            cel.escopo = escopo;
                         } else if (cel.token.equals("ID")) {
                             cel.valor_inicial = CalculaValorInicial(l, lexema);
+                            cel.escopo = escopo;
                         }else{
                             cel.valor_inicial = "-";
+                            cel.escopo = "-";
                         }
+                        
+                        
 
                         cel.linha = l.getLinha();
 
@@ -277,7 +291,7 @@ public class Analizador {
             }
 
         }else{
-            return "-";
+            return lexema;
         }
 
 

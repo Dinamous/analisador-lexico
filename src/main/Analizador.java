@@ -154,6 +154,7 @@ public class Analizador {
                 if(l.getConteudo().contains("program")){
                     escopo = "global";
                     
+                    //verificando se a linha possui funções ou subrotinas
                 }else if (l.getConteudo().contains("function") ||
                     l.getConteudo().contains("subroutine")){
                     escopo = l.getLexemas()[l.getLexemas().length-6];

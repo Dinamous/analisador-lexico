@@ -21,14 +21,14 @@ public class Analizador {
 
     public String v[] = {"program", "implicit", "none", "integer", "real", "complex", "character", "logical", "read", "write", "if",
         "then", "else", "end", "go", "endif", "endgo", "to", "pause", "parameter", "while", "do", "call", "subroutine", "function", "return",
-        ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ",","=","stop"};
+        ".eq.", ".ne.", ".lt.", ".le.", ".gt.", ".ge.", ".or.", ".and.", ".not.", "+", "-", "*", "/", "**", "(", ")", "\"", "//", "!", ".", ",", "=", "stop"};
 
     String t[] = {"PRO_INT", "TYPE_IMPLICIT", "TYPE_NONE", "TYPE_INTEGER", "TYPE_REAL", "TYPE_COMPLEX", "TYPE_CHARACTER", "TYPE_LOGICAL",
         "INPUT", "OUTPUT", "COND_IF", "COND_THEN", "COND_ELSE", "PRO_END", "FUNC_GO", "COND_END_IF", "COND_END_GO", "FUNC_TO",
         "FUNC_PAUSE", "PARAMS", "LOOP_WHILE", "LOOP_DO", "FUNC_CALL", "SUBROUTINE", "FUNC", "RET", "CB_EQUAL", "CB_NOTEQUAL",
         "CB_LOWERTHAN", "CB_LESSEQUAL", "CB_GREATERTHAN", "CB_GREATEREQUAL", "CB_OR", "CB_AND", "CB_NOT",
         "OP_PLUS", "OP_MINUS", "OP_MULTI", "OP_DIV", "OP_POW", "SIMB_OP_PAR", "SIMB_CL_PAR", "SIMB_QUOTE", "OP_CONCAT",
-        "SIMB_EXCLAMATION", "SIMB_DOT", "SIMB_COMMA","OP_EQUAL","PRO_STOP"};
+        "SIMB_EXCLAMATION", "SIMB_DOT", "SIMB_COMMA", "OP_EQUAL", "PRO_STOP"};
 
     List<VetordePalavras> palavras = new ArrayList<VetordePalavras>();
     String codigoTotal = "";
@@ -144,7 +144,7 @@ public class Analizador {
 
     private void PopulaTabela() {
         int id = 0;
-        
+
         for (Linha l : linhasLexemas) {
 
             if (l.getLexemas().length > 0) {
@@ -158,22 +158,21 @@ public class Analizador {
                         cel.escopo = "-";
                         cel.lin = "-";
                         cel.col = "-";
-                        cel.token = RetornaToken(lexema,l) ;
-                        
+                        cel.token = RetornaToken(lexema, l);
+
                         //verfica se o tipo do token pra ver se necessita 
                         //encontrar o valor de memória
-                        if(cel.token.equals("NUM")){
+                        if (cel.token.equals("NUM")) {
                             cel.valor_inicial = lexema;
-                        }else if(cel.token.equals("ID")){
-                            cel.valor_inicial = CalculaValorInicial(l,lexema);
+                        } else if (cel.token.equals("ID")) {
+                            cel.valor_inicial = CalculaValorInicial(l, lexema);
                         }
-                        
-                        
+
                         cel.linha = l.getLinha();
-                        
+
                         //incrementa o id pro próximo lexema
                         id++;
-                        
+
                         //adiciona a nova linha na tabela
                         tabela.celulas.add(cel);
                     }
@@ -186,77 +185,96 @@ public class Analizador {
 
     }
 
-    private String RetornaToken(String lexema,Linha l) {
-        
+    private String RetornaToken(String lexema, Linha l) {
+
         //foreach que percorre o vetor de palavras que contem 
         //todas os lexemas reservados e tokens correspondentes
-        for(VetordePalavras vetorPalavras : palavras){
-            
-            if(vetorPalavras.palavra_reservada.equals(lexema)){
+        for (VetordePalavras vetorPalavras : palavras) {
+
+            if (vetorPalavras.palavra_reservada.equals(lexema)) {
                 //se o lexema pertence ao vetor de palavras 
                 //reservadas retorna seu devido token
                 return vetorPalavras.token;
             }
-            
+
         }
-        
+
         //verificando se o lexema é um numero
-        if(lexema.trim().matches("((\\+|-)?([0-9]+)(\\.[0-9]+)?)|((\\+|-)?\\.?[0-9]+)")){
-           return "NUM";
+        if (lexema.trim().matches("((\\+|-)?([0-9]+)(\\.[0-9]+)?)|((\\+|-)?\\.?[0-9]+)")) {
+            return "NUM";
         }
-        
-        
+
         //verificando se o lexema é o conteudo das funções write()
-        if(lexema.matches("\\\"(\\w|\\d|\\s|\\:)*\\\"")){
+        if (lexema.matches("\\\"(\\w|\\d|\\s|\\:)*\\\"")) {
             return "LITERAL";
         }
-        
-        if(lexema.trim().matches("([a-z]+[0-9]*)+")){
-            
+
+        //verificando de o lexema corresponde a um ID
+        if (lexema.trim().matches("([a-z]+[0-9]*)+")) {
+
             return "ID";
-        }else{
+        } else {
             return "ERRO";
         }
-        
+
 //        return "-";
-        
     }
 
-    private String CalculaValorInicial(Linha l,String lexema) {
+    private String CalculaValorInicial(Linha l, String lexema) {
         String linha = l.getConteudo();
-        //integer a= 5+3*2, b = (4/2)**3
+
         //m(1,1) = 2.0
         //m(1,2) =m(1,1)*v(7)
         //aux=num1+num2
-          
-        if(linha.contains(",")){
-            
-   
-        //se a linha não possui mais de uma atribuição
-        }else{
+        if (linha.contains(",")) {
+
+            int posVirgula = linha.indexOf(",");
+            int posIgual = linha.indexOf("=");
+
+            if (posIgual < posVirgula) {
+                // x = m(1,2) + 3
+            } else {
+                String expressao[] = linha.split("=");
+                return expressao[expressao.length-1];
+                //m(1,1) = 2.0
+            }
+
+            if (linha.contains("=")) {
+
+                //integer a= 5+3*2
+                //b = (4/2)**3
+                String expressoes[] = linha.split(",");
+                for (String expressao : expressoes) {
+                    if (expressao.contains(lexema)) {
+                        System.out.println(expressao + "- " + expressao.indexOf("=") + "--" + (expressao.length() - 1));
+                        String exprex[] = expressao.split("=");
+                        return exprex[exprex.length-1];
+                    }
+                }
+            }
+
+            //se a linha não possui mais de uma atribuição
+        } else {
             //verifica se a linha possui atribuição, pq existem ID que não são atribuições
-            if(linha.contains("=")){
+            if (linha.contains("=")) {
                 int posIgual = linha.indexOf("=");
                 int posLexema = linha.indexOf(lexema);
                 //aux=num1+num2
-                
+
                 //verificando se o lexema que busca valor está antes do sinal de "="
                 //caso contrário só retorna o lexema
-                if(posLexema< posIgual){
+                if (posLexema < posIgual) {
                     String expressao[] = linha.split("=");
-                    System.out.println(Arrays.toString(expressao));
-                    return expressao[1];
-                }else{
+
+                    return expressao[expressao.length-1];
+                } else {
                     return lexema;
                 }
-                
-                
+
             }
-            
+
         }
-        
-         
-        
+
 //        if(l.getConteudo().contains("=")){
 ////            System.out.println("tem igual na linha: " + l.getLinha());;
 //            String divisaoIgual[] = l.getConteudo().split("=", l.getConteudo().length());
@@ -275,92 +293,113 @@ public class Analizador {
 //            
 //            
 //        }
-        
-        
-        
         return "-";
     }
 
     //função que transforma uma expressão arritmética de uma String
     //em ums solução viável
     public static double eval(final String str) {
-    return new Object() {
-        int pos = -1, ch;
+        return new Object() {
+            int pos = -1, ch;
 
-        void nextChar() {
-            ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-        }
+            void nextChar() {
+                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+            }
 
-        boolean eat(int charToEat) {
-            while (ch == ' ') nextChar();
-            if (ch == charToEat) {
+            boolean eat(int charToEat) {
+                while (ch == ' ') {
+                    nextChar();
+                }
+                if (ch == charToEat) {
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+
+            double parse() {
                 nextChar();
-                return true;
-            }
-            return false;
-        }
-
-        double parse() {
-            nextChar();
-            double x = parseExpression();
-            if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
-            return x;
-        }
-
-        // Grammar:
-        // expression = term | expression `+` term | expression `-` term
-        // term = factor | term `*` factor | term `/` factor
-        // factor = `+` factor | `-` factor | `(` expression `)`
-        //        | number | functionName factor | factor `^` factor
-
-        double parseExpression() {
-            double x = parseTerm();
-            for (;;) {
-                if      (eat('+')) x += parseTerm(); // addition
-                else if (eat('-')) x -= parseTerm(); // subtraction
-                else return x;
-            }
-        }
-
-        double parseTerm() {
-            double x = parseFactor();
-            for (;;) {
-                if      (eat('*')) x *= parseFactor(); // multiplication
-                else if (eat('/')) x /= parseFactor(); // division
-                else return x;
-            }
-        }
-
-        double parseFactor() {
-            if (eat('+')) return parseFactor(); // unary plus
-            if (eat('-')) return -parseFactor(); // unary minus
-
-            double x;
-            int startPos = this.pos;
-            if (eat('(')) { // parentheses
-                x = parseExpression();
-                eat(')');
-            } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-                while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
-                x = Double.parseDouble(str.substring(startPos, this.pos));
-            } else if (ch >= 'a' && ch <= 'z') { // functions
-                while (ch >= 'a' && ch <= 'z') nextChar();
-                String func = str.substring(startPos, this.pos);
-                x = parseFactor();
-                if (func.equals("sqrt")) x = Math.sqrt(x);
-                else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-                else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-                else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
-                else throw new RuntimeException("Unknown function: " + func);
-            } else {
-                throw new RuntimeException("Unexpected: " + (char)ch);
+                double x = parseExpression();
+                if (pos < str.length()) {
+                    throw new RuntimeException("Unexpected: " + (char) ch);
+                }
+                return x;
             }
 
-            if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+            // Grammar:
+            // expression = term | expression `+` term | expression `-` term
+            // term = factor | term `*` factor | term `/` factor
+            // factor = `+` factor | `-` factor | `(` expression `)`
+            //        | number | functionName factor | factor `^` factor
+            double parseExpression() {
+                double x = parseTerm();
+                for (;;) {
+                    if (eat('+')) {
+                        x += parseTerm(); // addition
+                    } else if (eat('-')) {
+                        x -= parseTerm(); // subtraction
+                    } else {
+                        return x;
+                    }
+                }
+            }
 
-            return x;
-        }
-    }.parse();
+            double parseTerm() {
+                double x = parseFactor();
+                for (;;) {
+                    if (eat('*')) {
+                        x *= parseFactor(); // multiplication
+                    } else if (eat('/')) {
+                        x /= parseFactor(); // division
+                    } else {
+                        return x;
+                    }
+                }
+            }
+
+            double parseFactor() {
+                if (eat('+')) {
+                    return parseFactor(); // unary plus
+                }
+                if (eat('-')) {
+                    return -parseFactor(); // unary minus
+                }
+                double x;
+                int startPos = this.pos;
+                if (eat('(')) { // parentheses
+                    x = parseExpression();
+                    eat(')');
+                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+                    while ((ch >= '0' && ch <= '9') || ch == '.') {
+                        nextChar();
+                    }
+                    x = Double.parseDouble(str.substring(startPos, this.pos));
+                } else if (ch >= 'a' && ch <= 'z') { // functions
+                    while (ch >= 'a' && ch <= 'z') {
+                        nextChar();
+                    }
+                    String func = str.substring(startPos, this.pos);
+                    x = parseFactor();
+                    if (func.equals("sqrt")) {
+                        x = Math.sqrt(x);
+                    } else if (func.equals("sin")) {
+                        x = Math.sin(Math.toRadians(x));
+                    } else if (func.equals("cos")) {
+                        x = Math.cos(Math.toRadians(x));
+                    } else if (func.equals("tan")) {
+                        x = Math.tan(Math.toRadians(x));
+                    } else {
+                        throw new RuntimeException("Unknown function: " + func);
+                    }
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char) ch);
+                }
+
+                if (eat('^')) {
+                    x = Math.pow(x, parseFactor()); // exponentiation
+                }
+                return x;
+            }
+        }.parse();
+    }
 }
-}
-    

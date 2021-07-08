@@ -143,33 +143,32 @@ public class Analizador {
     }
 
     private void PopulaTabela() {
-        int id = 0;
+        int id = 1;
         String escopo = "";
 
         for (Linha l : linhasLexemas) {
 
             if (l.getLexemas().length > 0) {
-        
+
                 //verificando se a linha possui escopo
-                if(l.getConteudo().contains("program")){
+                if (l.getConteudo().contains("program")) {
                     escopo = "global";
-                    
+
                     //verificando se a linha possui funções ou subrotinas
-                }else if (l.getConteudo().contains("function")){
-                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("function")+9, l.getConteudo().indexOf("("));
-                }else if(l.getConteudo().contains("subroutine")){
-                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("subroutine")+11, l.getConteudo().indexOf("("));
-                    
+                } else if (l.getConteudo().contains("function")) {
+                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("function") + 9, l.getConteudo().indexOf("("));
+                } else if (l.getConteudo().contains("subroutine")) {
+                    escopo = l.getConteudo().substring(l.getConteudo().indexOf("subroutine") + 11, l.getConteudo().indexOf("("));
+
                 }
                 for (String lexema : l.getLexemas()) {
 
                     if (lexema.length() >= 1) {
+
                         Celula cel = new Celula();
                         cel.id = id;
                         cel.lexema = lexema;
-                        
-                        cel.lin = "-";
-                        cel.col = "-";
+
                         cel.token = RetornaToken(lexema, l);
 
                         //verfica se o tipo do token pra ver se necessita 
@@ -177,16 +176,22 @@ public class Analizador {
                         if (cel.token.equals("NUM")) {
                             cel.valor_inicial = lexema;
                             cel.escopo = escopo;
+                            cel.lin = "-";
+                            cel.col = "-";
                         } else if (cel.token.equals("ID")) {
-                            cel.valor_inicial = CalculaValorInicial(l, lexema);
+                            String vetores[] = VerificaVetores(lexema.trim(), l);
+                            cel.valor_inicial = CalculaValorInicial(l, lexema.trim());
                             cel.escopo = escopo;
-                        }else{
+                            cel.lin = vetores[0];
+                            cel.col = vetores[1];
+                        } else {
                             cel.valor_inicial = "-";
                             cel.escopo = "-";
+                            cel.lin = "-";
+                            cel.col = "-";
                         }
-                        
-                        
 
+                        //real m(5,15), v(10)
                         cel.linha = l.getLinha();
 
                         //incrementa o id pro próximo lexema
@@ -201,7 +206,6 @@ public class Analizador {
             }
 
         }
-
     }
 
     private String RetornaToken(String lexema, Linha l) {
@@ -242,67 +246,109 @@ public class Analizador {
     private String CalculaValorInicial(Linha l, String lexema) {
         String linha = l.getConteudo();
 
-        //apenas atribui o valor para um identificador
-        //se ele posssui um lexema de = na linha dele
-        if (linha.contains("=")) {
+        //verificando se a linha possui algum tipo declarativo
+        if (linha.contains("integer") || linha.contains("real")
+                || linha.contains("complex") || linha.contains("character")
+                || linha.contains("logical")) {
 
-            int countIgual = linha.length() - linha.replaceAll("=", "").length();
+            //verificando se a linha possui atribuição
+            if (linha.contains("=")) {
 
-            //se a linha possui apenas uma tribuição
-            if (countIgual == 1) {
-                int posIgual = linha.indexOf("=");
-                int posLexema = linha.indexOf(lexema);
+                //se a linha tiver mais de uma atribuição
+                if (linha.contains(",")) {
+                    String splitVirgula[] = linha.split(",");
 
-                //se o lexema pesquisado está antes do igual
-                if (posLexema < posIgual) {
-                    System.out.println(linha);
-                    int posVirgula = linha.indexOf(",");
-                    
+                    for (String atribuicao : splitVirgula) {
+                        if (atribuicao.contains(lexema)) {
 
-                    //se a virgula tá depois do igual
-                    if (posVirgula > posIgual) {
-
-                        String atribuicoes[] = linha.split(",");
-                        for (String atribuicao : atribuicoes) {
-                            if (atribuicao.contains(lexema)) {
-                                String ex[] = atribuicao.split("=");
-                                return ex[ex.length - 1];
-                            }
+                            String atr[] = atribuicao.split("=");
+                            return atr[atr.length - 1];
                         }
-                        
-                    //se a virgula tá antes do igual
-                    } else {
-
-                        String exp[] = linha.split("=");
-                        return exp[exp.length - 1];
                     }
-
+                    //caso a linha não tenha virgula 
                 } else {
-                    return lexema;
-                }
 
-            //caso a linha tenha mais de uma atribuição
-            } else {
-                String splitLinha[] = linha.split(",");
-                for(String atribuicao :splitLinha){
-                    if(atribuicao.contains(lexema)){
-                        String split[] = atribuicao.split("=");
-                        return split[split.length-1];
+                    int posLexema = linha.indexOf(lexema);
+                    int posIgual = linha.indexOf("=");
+
+                    //apenas se o lexema estiver antes do igual
+                    if (posLexema < posIgual) {
+                        String splitIgual[] = linha.split("=");
+                        return splitIgual[splitIgual.length - 1];
+
+                    } else {
+                        return lexema;
                     }
+
                 }
 
+            } else {
+                return "-";
             }
 
-        }else{
-            return "-";
+        } else {
+            if (!linha.contains("program") || linha.contains("function") || linha.contains("subroutine")) {
+                return "-";
+            } else {
+                return "-";
+            }
         }
-
 
         return "ERRO";
     }
 
-    //função que transforma uma expressão arritmética de uma String
-    //em ums solução viável
+    private String[] VerificaVetores(String lexema, Linha l) {
+
+        String linha = l.getConteudo();
+        String posicoes[] = {"-", "-"};
+
+        //verificando se a linha possui algum tipo declarativo
+        if (linha.contains("integer") || linha.contains("real")
+                || linha.contains("complex") || linha.contains("character")
+                || linha.contains("logical")) {
+
+            //a linha não deve conter atribuição
+            if (!linha.contains("=") && linha.contains("(") && linha.contains(")")
+                    && !linha.contains("function") && !linha.contains("subroutine")) {
+                String regex = "[a-z]+[0-9]*\\([0-9]+(\\,[0-9]*)*\\)";
+                String vetores[] = linha.split("(?=" + regex + ")|(!=" + regex + ")");
+                
+           
+                            
+              
+                
+                for(String array: vetores){
+                   if(array.contains(lexema)){
+                       
+                       //verificando se é uma matriz
+                       if(array.contains(",")){
+                           
+                           String x = array.replaceAll("[^-?0-9]+", " ");
+                           String numeros[] = x.trim().split(" ");
+                            
+                          return numeros; 
+                       
+                       //verificando se é um vetor    
+                       }else{
+                           String x = array.replaceAll("[^-?0-9]+", " ");
+                           String numeros[] = x.trim().split(" ");
+                          
+                           posicoes[0] = numeros[numeros.length-1];
+                           return posicoes;
+                       }
+                      
+                   }
+                }
+
+            }
+        }
+
+        return posicoes;
+
+    }
+
+//função que transforma uma expressão arritmética de uma String
+//em ums solução viável
     public static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;
@@ -407,4 +453,5 @@ public class Analizador {
             }
         }.parse();
     }
+
 }

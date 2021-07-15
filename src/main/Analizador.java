@@ -180,7 +180,7 @@ public class Analizador {
                             cel.col = "-";
                         } else if (cel.token.equals("ID")) {
                             String vetores[] = VerificaVetores(lexema.trim(), l);
-                            cel.valor_inicial = CalculaValorInicial(l, lexema.trim());
+                            cel.valor_inicial = CalculaValorInicial(l, lexema.trim());                       
                             cel.escopo = escopo;
                             cel.lin = vetores[0];
                             cel.col = vetores[1];
@@ -260,9 +260,19 @@ public class Analizador {
 
                     for (String atribuicao : splitVirgula) {
                         if (atribuicao.contains(lexema)) {
-
+                            
                             String atr[] = atribuicao.split("=");
-                            return atr[atr.length - 1];
+                            String expressao = atr[atr.length - 1];
+                            
+                            
+                            expressao = expressao.replace("**", "^");
+                            
+                            
+                            //chama a função que converte a string de atribuição em operação aritmética
+                            Double eval = eval(expressao.trim());
+                            
+                            System.out.println(expressao+" = "+eval);
+                            return eval.toString();
                         }
                     }
                     //caso a linha não tenha virgula 
